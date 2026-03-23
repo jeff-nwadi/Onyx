@@ -32,26 +32,26 @@ const data2 = [
 
 export default function TechnicalPage() {
   return (
-    <div className='bg-[#E9F2FF] py-20 overflow-hidden'>
-        <div className='flex flex-col justify-center items-center'>
-            <h1 data-gsap="fade-up" className='text-[50px] font-bold py-3 text-[#0B1220] flex flex-col items-center justify-center leading-[100%]'>Technical Specifications.</h1>
+    <div className='bg-[#E9F2FF] py-16 md:py-20 overflow-hidden px-6'>
+        <div className='flex flex-col justify-center items-center text-center'>
+            <h1 data-gsap="fade-up" className='text-3xl md:text-[50px] font-bold py-3 text-[#0B1220] flex flex-col items-center justify-center leading-[110%] md:leading-[100%]'>Technical Specifications.</h1>
         </div>
         <div>
-            <div data-gsap="stagger" className='grid md:grid-cols-3 grid-rows-1 py-18 gap-15 px-28'>
+            <div data-gsap="stagger" className='grid grid-cols-1 md:grid-cols-3 py-10 md:py-18 gap-10 md:gap-15 px-0 md:px-28'>
                 {data.map((item, index) => (
-                    <div key={index} className='flex flex-col gap-5'>
-                        <item.icon className='w-10 h-10 text-[#0B1220]' />
-                        <h2 className='text-[24px] font-bold text-[#0B1220]'>{item.title}</h2>
-                        <p className='text-[16px] font-normal text-[#6B7280]'>{item.description}</p>
+                    <div key={index} className='flex flex-col gap-4 md:gap-5 text-center md:text-left items-center md:items-start'>
+                        <item.icon className='w-8 h-8 md:w-10 md:h-10 text-[#0B1220]' />
+                        <h2 className='text-xl md:text-[24px] font-bold text-[#0B1220]'>{item.title}</h2>
+                        <p className='text-sm md:text-[16px] font-normal text-[#6B7280]'>{item.description}</p>
                     </div>
                 ))}
             </div>
-            <div className='h-px bg-[#0B1220]/10 mx-28' />
-            <div data-gsap="stagger" className='grid md:grid-cols-3 grid-rows-1 py-18 gap-15 px-28'>
+            <div className='h-px bg-[#0B1220]/10 mx-0 md:mx-28' />
+            <div data-gsap="stagger" className='grid grid-cols-2 md:grid-cols-3 py-10 md:py-18 gap-8 md:gap-15 px-0 md:px-28'>
                 {data2.map((item, index) => (
-                    <div key={index} className='flex flex-col gap-3'>
-                        <h2 className='text-[13px] font-bold text-[#6B7280] uppercase'>{item.title}</h2>
-                        <p className='text-[18px] font-normal text-[#0B1220]'>{item.description}</p>
+                    <div key={index} className='flex flex-col gap-2 md:gap-3 text-center md:text-left'>
+                        <h2 className='text-[11px] md:text-[13px] font-bold text-[#6B7280] uppercase'>{item.title}</h2>
+                        <p className='text-base md:text-[18px] font-normal text-[#0B1220]'>{item.description}</p>
                     </div>
                 ))}
             </div>

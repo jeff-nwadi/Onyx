@@ -1,7 +1,6 @@
 'use client'
 
 import { ReactNode, useEffect } from 'react'
-import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useStore } from '@/store/useStore'
@@ -15,21 +14,11 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
     setIsMounted(true)
     
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
-    })
-
-    lenis.on('scroll', (e: any) => {
-      setIsScrolled(e.scroll > 50)
-    })
-
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
     }
-    requestAnimationFrame(raf)
+
+    window.addEventListener('scroll', handleScroll)
 
     const initAnimations = () => {
       gsap.utils.toArray('[data-gsap="fade-up"]').forEach((el: any) => {
@@ -82,7 +71,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     const timer = setTimeout(initAnimations, 100)
 
     return () => {
-      lenis.destroy()
+      window.removeEventListener('scroll', handleScroll)
       clearTimeout(timer)
       ScrollTrigger.getAll().forEach(t => t.kill())
     }
