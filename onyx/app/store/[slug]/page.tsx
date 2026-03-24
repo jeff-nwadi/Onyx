@@ -3,9 +3,10 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams } from 'next/navigation' 
 import { products } from '@/store/products'
 import { useCartStore } from '@/store/useCartStore'
+import ProductCard from '@/components/sections/ProductCard'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
@@ -232,38 +233,14 @@ export default function ProductDetailPage() {
         <h2 data-gsap="fade-up" className='text-3xl md:text-[40px] font-bold text-[#0B1220] text-center mb-12'>Accessories.</h2>
         <div data-gsap="stagger" className='grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10'>
           {accessories.map((item) => (
-            <Link
+            <ProductCard 
               key={item.slug}
-              href={`/store/${item.slug}`}
-              className='flex flex-col gap-5 group'
-            >
-              <div className='bg-[#E8EFF9] rounded-[20px] flex items-center justify-center aspect-square p-10 transition-all duration-300 group-hover:scale-[1.01]'>
-                <Image src={item.images[0]} alt={item.name} className='w-full h-full object-contain' />
-              </div>
-              <div className='flex flex-col gap-1'>
-                <h3 className='text-[18px] font-bold text-[#0B1220]'>{item.name}</h3>
-                <p className='text-[13px] text-[#6B7280] leading-relaxed min-h-[36px]'>{item.description}</p>
-                <div className='flex flex-col gap-4 mt-3'>
-                  <span className='text-[17px] font-bold text-[#0B1220]'>${item.price}</span>
-                  <button 
-                    onClick={(e) => {
-                      e.preventDefault() // prevent navigating to product detail
-                      addItem({
-                        productId: item.slug,
-                        slug: item.slug,
-                        name: item.name,
-                        price: item.price,
-                        image: item.images[0],
-                        quantity: 1
-                      })
-                    }}
-                    className='bg-[#F0F4FA] text-[#0B1220] py-4 rounded-[12px] text-center text-[14px] font-semibold hover:bg-[#E0E8F4] transition-colors w-full'
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-            </Link>
+              slug={item.slug}
+              name={item.name}
+              description={item.description}
+              price={item.price}
+              image={item.images[0]}
+            />
           ))}
         </div>
       </div>

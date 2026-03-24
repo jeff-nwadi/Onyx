@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { CartItem } from '@/store/useCartStore'
+import { products } from '@/store/products'
 
 export async function POST(req: Request) {
   try {
@@ -20,10 +21,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
-    // Map cart items to Stripe line_items format
+    // Map cart items to Stripe line_items format SECURELY
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
-      // Calculate total item price (base price + cellular plan base price if applicable)
-      const unitPrice = item.price + (item.plan?.price || 0)
+      // SECURE CALCULATION: Look up the real product in our "database" (products.ts)
+      const authenticProduct = products.find(p => p.slug === item.productId || p.slug === item.slug)
+      
+      if (!authenticProduct) {
+        throw new Error(`Invalid product ID in cart: ${item.slug}`)
+      }
+
+      // Start with the authentic base price
+      let unitPrice = authenticProduct.price
+
+      // If they selected a plan, verify its price
+      if (item.plan) {
+        const authenticPlan = authenticProduct.plans?.find(p => p.id === item.plan?.id)
+        if (authenticPlan) {
+          unitPrice += authenticPlan.price
+        }
+      }
 
       // Create a description that summarizes the selected variants
       const descriptionParts = []
@@ -36,10 +52,8 @@ export async function POST(req: Request) {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: item.name,
+            name: authenticProduct.name, // Use authentic name
             description: description || undefined,
-            // If images were absolute URLs, we could include them via `images: [item.image]`
-            // But since they are StaticImageData from Next.js, Stripe cannot access them securely without a public URL.
           },
           unit_amount: unitPrice * 100, // Stripe expects amounts in cents
         },
