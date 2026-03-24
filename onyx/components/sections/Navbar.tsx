@@ -7,9 +7,30 @@ import Link from 'next/link'
 import { useStore } from '@/store/useStore'
 import { Menu, X } from 'lucide-react'
 
+import { usePathname } from 'next/navigation'
+
 export default function Navbar() {
   const isScrolled = useStore((state) => state.isScrolled)
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+  const pathname = usePathname()
+
+  const navLinks = [
+    { name: 'Overview', href: '/overview' },
+    { name: 'Design', href: '/design' },
+    { name: 'Intelligence', href: '/intelligence' },
+    { name: 'Technical Specs', href: '/technical-specs' },
+    { name: 'Store', href: '/store' },
+  ]
+
+  const getLinkClass = (href: string, isMobile = false) => {
+    const isActive = pathname === href
+    const baseClass = isMobile ? 'font-medium text-[16px]' : 'font-medium text-[14px] transition-colors'
+    
+    if (isActive) {
+      return `${baseClass} text-[#0B1220]`
+    }
+    return `${baseClass} text-[#6B7280] hover:text-[#0B1220]`
+  }
 
   return (
     <nav 
@@ -26,20 +47,24 @@ export default function Navbar() {
         </div>
         <div className='hidden md:block'>
             <ul className='flex items-center gap-10'>
-                <Link href="/overview" className='text-[#6B7280] font-medium text-[14px] hover:text-[#0B1220] transition-colors'>Overview</Link>
-                <Link href="/design" className='text-[#6B7280] font-medium text-[14px] hover:text-[#0B1220] transition-colors'>Design</Link>
-                <Link href="/intelligence" className='text-[#6B7280] font-medium text-[14px] hover:text-[#0B1220] transition-colors'>Intelligence</Link>
-                <Link href="/technical-specs" className='text-[#6B7280] font-medium text-[14px] hover:text-[#0B1220] transition-colors'>Technical Specs</Link>
-                <Link href="/store" className='text-[#6B7280] font-medium text-[14px] hover:text-[#0B1220] transition-colors'>Store</Link>
+                {navLinks.map((link) => (
+                    <Link 
+                      key={link.href} 
+                      href={link.href} 
+                      className={getLinkClass(link.href)}
+                    >
+                      {link.name}
+                    </Link>
+                ))}
             </ul>
         </div>
         <div className='hidden md:block'>
-            <button className='bg-[#0B1220] text-white px-6 py-3 rounded-[12px] font-medium text-[14px] hover:scale-105 transition-all duration-300'>Pre-order</button>
+            <Link href="/store" className='bg-[#0B1220] text-white px-6 py-3 rounded-[12px] font-medium text-[14px] hover:scale-105 transition-all duration-300 inline-block'>Pre-order</Link>
         </div>
 
         {/* Mobile Menu Button */}
         <div className='md:hidden flex items-center gap-4'>
-            <button className='bg-[#0B1220] text-white px-4 py-2 rounded-[10px] font-medium text-[12px]'>Pre-order</button>
+            <Link href="/store" className='bg-[#0B1220] text-white px-4 py-2 rounded-[10px] font-medium text-[12px] inline-block'>Pre-order</Link>
             <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className='text-[#0B1220] p-2'
@@ -51,11 +76,16 @@ export default function Navbar() {
         {/* Mobile menu */}
         {isMenuOpen && (
             <div className='absolute top-full left-0 w-full bg-white border-t border-gray-100 flex flex-col p-6 gap-6 md:hidden shadow-lg animate-in fade-in slide-in-from-top-4 duration-300'>
-                <Link href="/overview" onClick={() => setIsMenuOpen(false)} className='text-[#6B7280] font-medium text-[16px]'>Overview</Link>
-                <Link href="/design" onClick={() => setIsMenuOpen(false)} className='text-[#6B7280] font-medium text-[16px]'>Design</Link>
-                <Link href="/intelligence" onClick={() => setIsMenuOpen(false)} className='text-[#6B7280] font-medium text-[16px]'>Intelligence</Link>
-                <Link href="/technical-specs" onClick={() => setIsMenuOpen(false)} className='text-[#6B7280] font-medium text-[16px]'>Technical Specs</Link>
-                <Link href="/store" onClick={() => setIsMenuOpen(false)} className='text-[#6B7280] font-medium text-[16px]'>Store</Link>
+                {navLinks.map((link) => (
+                    <Link 
+                      key={link.href} 
+                      href={link.href} 
+                      onClick={() => setIsMenuOpen(false)} 
+                      className={getLinkClass(link.href, true)}
+                    >
+                      {link.name}
+                    </Link>
+                ))}
             </div>
         )}
     </nav>

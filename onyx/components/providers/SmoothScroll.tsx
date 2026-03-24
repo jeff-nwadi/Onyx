@@ -4,12 +4,14 @@ import { ReactNode, useEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useStore } from '@/store/useStore'
+import { usePathname } from 'next/navigation'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   const setIsScrolled = useStore((state) => state.setIsScrolled)
   const setIsMounted = useStore((state) => state.setIsMounted)
+  const pathname = usePathname()
 
   useEffect(() => {
     setIsMounted(true)
@@ -27,10 +29,10 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
             trigger: el,
             start: 'top 85%',
           },
-          y: 40,
+          y: 80,
           opacity: 0,
-          duration: 1,
-          ease: 'power3.out'
+          duration: 1.2,
+          ease: 'power4.out'
         })
       })
 
@@ -40,11 +42,11 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
             trigger: el,
             start: 'top 85%',
           },
-          y: 30,
+          y: 80,
           opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power2.out'
+          duration: 1.2,
+          stagger: 0.15,
+          ease: 'power4.out'
         })
       })
 
@@ -75,7 +77,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       clearTimeout(timer)
       ScrollTrigger.getAll().forEach(t => t.kill())
     }
-  }, [setIsScrolled, setIsMounted])
+  }, [setIsScrolled, setIsMounted, pathname])
 
   return <>{children}</>
 }

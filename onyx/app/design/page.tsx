@@ -1,9 +1,9 @@
-import React from 'react'
+import Designs from './Designs'
 
 export default function page() {
   return (
-    <div>
-        
+    <div className='overflow-hidden'>
+        <Designs />
     </div>
   )
 }
