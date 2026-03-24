@@ -5,12 +5,15 @@ import logo from '@/public/images/ONYX..svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useStore } from '@/store/useStore'
-import { Menu, X } from 'lucide-react'
+import { useCartStore } from '@/store/useCartStore'
+import { Menu, X, ShoppingBag } from 'lucide-react'
 
 import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
   const isScrolled = useStore((state) => state.isScrolled)
+  const toggleCart = useCartStore((state) => state.toggleCart)
+  const cartItemsCount = useCartStore((state) => state.items.reduce((acc, item) => acc + item.quantity, 0))
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
   const pathname = usePathname()
 
@@ -58,13 +61,27 @@ export default function Navbar() {
                 ))}
             </ul>
         </div>
-        <div className='hidden md:block'>
+        <div className='hidden md:flex items-center gap-6'>
+            <button onClick={toggleCart} className='relative p-2 text-[#0B1220] hover:opacity-70 transition-opacity'>
+              <ShoppingBag className='w-5 h-5' />
+              {cartItemsCount > 0 && (
+                <span className='absolute top-0 right-0 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full'>
+                  {cartItemsCount}
+                </span>
+              )}
+            </button>
             <Link href="/store" className='bg-[#0B1220] text-white px-6 py-3 rounded-[12px] font-medium text-[14px] hover:scale-105 transition-all duration-300 inline-block'>Pre-order</Link>
         </div>
 
-        {/* Mobile Menu Button */}
         <div className='md:hidden flex items-center gap-4'>
-            <Link href="/store" className='bg-[#0B1220] text-white px-4 py-2 rounded-[10px] font-medium text-[12px] inline-block'>Pre-order</Link>
+            <button onClick={toggleCart} className='relative p-2 text-[#0B1220]'>
+              <ShoppingBag className='w-6 h-6' />
+              {cartItemsCount > 0 && (
+                <span className='absolute top-0 right-0 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full'>
+                  {cartItemsCount}
+                </span>
+              )}
+            </button>
             <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className='text-[#0B1220] p-2'

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
 import SmoothScroll from "@/components/providers/SmoothScroll";
+import CartSidebar from "@/components/sections/CartSidebar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,6 +31,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <CartSidebar />
         </SmoothScroll>
         </body>
     </html>

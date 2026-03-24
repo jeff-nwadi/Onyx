@@ -5,11 +5,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { products } from '@/store/products'
+import { useCartStore } from '@/store/useCartStore'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
   const product = products.find((p) => p.slug === slug)
   const accessories = products.filter((p) => p.slug !== slug)
+  const addItem = useCartStore((state) => state.addItem)
 
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedSize, setSelectedSize] = useState(product?.sizes?.[1]?.id || '')
@@ -31,7 +33,26 @@ export default function ProductDetailPage() {
 
   const sizeLabel = (id: string) => {
     const size = product.sizes?.find(s => s.id === id)
-    return size?.description ?? ''
+    return size?.name ?? ''
+  }
+
+  const finishLabel = (id: string) => {
+    const finish = product.finishes?.find(f => f.id === id)
+    return finish?.name ?? ''
+  }
+
+  const handleAddToCart = () => {
+    addItem({
+      productId: product.slug,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      quantity: 1,
+      size: product.sizes ? { id: selectedSize, name: sizeLabel(selectedSize) } : undefined,
+      finish: product.finishes ? { id: selectedFinish, name: finishLabel(selectedFinish) } : undefined,
+      plan: selectedPlanData ? { id: selectedPlanData.id, name: selectedPlanData.name, price: selectedPlanData.price } : undefined,
+    })
   }
 
   return (
@@ -195,7 +216,10 @@ export default function ProductDetailPage() {
               <span className='text-[24px] font-bold text-[#0B1220]'>${totalDue}</span>
             </div>
             {/* CTA */}
-            <button className='w-full bg-[#0B1220] text-white py-5 rounded-[14px] font-bold text-[16px] hover:bg-[#1a2840] hover:scale-[1.01] transition-all duration-200'>
+            <button 
+              onClick={handleAddToCart}
+              className='w-full bg-[#0B1220] text-white py-5 rounded-[14px] font-bold text-[16px] hover:bg-[#1a2840] hover:scale-[1.01] transition-all duration-200'
+            >
               Add to Bag
             </button>
             <p className='text-center text-[12px] text-[#6B7280]'>Ships in 2–4 weeks. Free shipping and returns.</p>
@@ -221,9 +245,22 @@ export default function ProductDetailPage() {
                 <p className='text-[13px] text-[#6B7280] leading-relaxed min-h-[36px]'>{item.description}</p>
                 <div className='flex flex-col gap-4 mt-3'>
                   <span className='text-[17px] font-bold text-[#0B1220]'>${item.price}</span>
-                  <div className='bg-[#F0F4FA] text-[#0B1220] py-4 rounded-[12px] text-center text-[14px] font-semibold group-hover:bg-[#E0E8F4] transition-colors'>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault() // prevent navigating to product detail
+                      addItem({
+                        productId: item.slug,
+                        slug: item.slug,
+                        name: item.name,
+                        price: item.price,
+                        image: item.images[0],
+                        quantity: 1
+                      })
+                    }}
+                    className='bg-[#F0F4FA] text-[#0B1220] py-4 rounded-[12px] text-center text-[14px] font-semibold hover:bg-[#E0E8F4] transition-colors w-full'
+                  >
                     Add
-                  </div>
+                  </button>
                 </div>
               </div>
             </Link>
