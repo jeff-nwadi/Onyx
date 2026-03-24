@@ -20,9 +20,9 @@ export default function ProductCard({ slug, name, description, price, image }: P
     <div className='flex flex-col bg-[#E9F2FF] rounded-[16px] p-5 group'>
         <Link 
           href={`/store/${slug}`} 
-          className='aspect-square bg-white w-full flex items-center justify-center relative p-8 mb-6 transition-transform duration-500 group-hover:scale-[1.02]'
+          className='aspect-square w-full flex items-center justify-center relative p-2 mb-4 transition-transform duration-500 group-hover:scale-[1.02]'
         >
-            <Image src={image} alt={name} className='w-[80%] h-[80%] object-contain' />
+            <Image src={image} alt={name} className='w-full h-full object-contain' />
         </Link>
         <div className='flex flex-col flex-1 pb-2'>
             <Link href={`/store/${slug}`}>

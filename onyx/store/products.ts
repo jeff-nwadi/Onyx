@@ -5,10 +5,11 @@ import neoCollar from '@/public/images/neo-collar.png'
 import chargingDock from '@/public/images/charging-dock.png'
 import luminaCollar from '@/public/images/lumina-collar.png'
 import luminaSvg from '@/public/images/Lumina.svg'
-import neuralCoreSvg from '@/public/images/A1 Neural Core.svg'
-import acousticEngineSvg from '@/public/images/Acoustic Engine.svg'
-import gpsTrackingSvg from '@/public/images/GPS Tracking.svg'
-import healthTrackingSvg from '@/public/images/Health Tracking.svg'
+import Titanium from '@/public/images/overview2.svg'
+import Band from '@/public/images/overview3.svg'
+import Obsidian from '@/public/images/Background.svg'
+import Sandstone from '@/public/images/Background(1).svg'
+
 
 export interface ProductSize {
   id: string
@@ -129,27 +130,27 @@ export const products: Product[] = [
     name: "A1 Neural Core Module",
     description: "Upgrade your collar with advanced machine-learning capabilities for behavioral predictions.",
     price: 129,
-    images: [neuralCoreSvg],
+    images: [Titanium],
   },
   {
     slug: "acoustic-engine-tag",
     name: "Acoustic Engine Tag",
     description: "Enhance training and recall with a high-fidelity ultrasonic and audible cue module.",
     price: 79,
-    images: [acousticEngineSvg],
+    images: [Band],
   },
   {
     slug: "precision-gps-beacon",
     name: "Precision GPS Beacon",
     description: "An ultra-compact secondary tracking unit for extended range off-grid adventures.",
     price: 149,
-    images: [gpsTrackingSvg],
+    images: [Obsidian],
   },
   {
     slug: "vital-health-tracker",
     name: "Vital Health Sensor",
     description: "A clip-on expansion module for deep biometric monitoring, including HRV and sleep cycles.",
     price: 99,
-    images: [healthTrackingSvg],
+    images: [Sandstone],
   },
 ]

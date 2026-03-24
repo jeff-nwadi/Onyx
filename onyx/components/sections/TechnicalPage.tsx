@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { Cpu, MapPin } from 'lucide-react'
+import { Cpu, MapPin, Activity } from 'lucide-react'
 
 const data = [
     {
@@ -12,7 +12,7 @@ const data = [
     {
         title: "Biometrics",
         description: "Clinical-grade optical sensors provide continuous, non-invasive monitoring of vital signs, deep sleep cycles, and daily caloric burn. ",
-        icon: MapPin
+        icon: Activity
     },
     {
         title: "Connectivity",
